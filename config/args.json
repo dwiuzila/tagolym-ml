@@ -1,0 +1,11 @@
+{
+    "nocommand": false, 
+    "stem": false,
+    "ngram_max": 1,
+    "loss": "hinge",
+    "l1_ratio": 0.15, 
+    "alpha": 0.0001,
+    "learning_rate": "optimal", 
+    "eta0": 0.0, 
+    "power_t": 0.5
+}

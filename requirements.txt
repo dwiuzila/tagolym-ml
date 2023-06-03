@@ -1,0 +1,6 @@
+google-cloud-bigquery==3.11.0
+grpcio-status==1.54.2
+mlflow==2.3.2
+nltk==3.8.1
+optuna==3.2.0
+snorkel==0.9.9

@@ -1,0 +1,120 @@
+{
+    "overall": {
+        "precision": 0.7401183836270933,
+        "recall": 0.741642537509871,
+        "f1": 0.7350759417104586,
+        "num_samples": 5116
+    },
+    "class": {
+        "algebra": {
+            "precision": 0.6378334680679062,
+            "recall": 0.7245179063360881,
+            "f1": 0.6784178847807395,
+            "num_samples": 1089
+        },
+        "circle": {
+            "precision": 0.4873501997336884,
+            "recall": 0.7106796116504854,
+            "f1": 0.5781990521327014,
+            "num_samples": 515
+        },
+        "combinatorics": {
+            "precision": 0.7487725040916531,
+            "recall": 0.8198924731182796,
+            "f1": 0.7827202737382379,
+            "num_samples": 1116
+        },
+        "function": {
+            "precision": 0.7522388059701492,
+            "recall": 0.5101214574898786,
+            "f1": 0.6079613992762365,
+            "num_samples": 494
+        },
+        "geometry": {
+            "precision": 0.9341189073379753,
+            "recall": 0.8934426229508197,
+            "f1": 0.9133280963603038,
+            "num_samples": 1952
+        },
+        "inequality": {
+            "precision": 0.7052845528455285,
+            "recall": 0.543035993740219,
+            "f1": 0.6136162687886826,
+            "num_samples": 639
+        },
+        "modular arithmetic": {
+            "precision": 0.2680851063829787,
+            "recall": 0.3387096774193548,
+            "f1": 0.2992874109263658,
+            "num_samples": 186
+        },
+        "number theory": {
+            "precision": 0.7437751004016064,
+            "recall": 0.8282647584973166,
+            "f1": 0.7837494710114262,
+            "num_samples": 1118
+        },
+        "polynomial": {
+            "precision": 0.8756756756756757,
+            "recall": 0.6377952755905512,
+            "f1": 0.7380410022779043,
+            "num_samples": 254
+        },
+        "trigonometry": {
+            "precision": 0.39444444444444443,
+            "recall": 0.3021276595744681,
+            "f1": 0.34216867469879514,
+            "num_samples": 235
+        }
+    },
+    "slices": {
+        "short_post": {
+            "precision": 0.6666666666666666,
+            "recall": 0.7241379310344828,
+            "f1": 0.6942148760330579,
+            "num_samples": 86
+        },
+        "inequality_not_algebra": {
+            "precision": 0.5736766809728183,
+            "recall": 0.5214564369310793,
+            "f1": 0.5463215258855586,
+            "num_samples": 437
+        },
+        "function_not_algebra": {
+            "precision": 0.5981308411214953,
+            "recall": 0.44036697247706424,
+            "f1": 0.5072655217965653,
+            "num_samples": 199
+        },
+        "polynomial_not_algebra": {
+            "precision": 0.36363636363636365,
+            "recall": 0.5714285714285714,
+            "f1": 0.4444444444444444,
+            "num_samples": 5
+        },
+        "circle_not_geometry": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "num_samples": 3
+        },
+        "trigonometry_not_geometry": {
+            "precision": 0.7090909090909091,
+            "recall": 0.5531914893617021,
+            "f1": 0.6215139442231076,
+            "num_samples": 62
+        },
+        "modular_arithmetic_not_number_theory": {
+            "precision": 0.6341463414634146,
+            "recall": 0.4,
+            "f1": 0.49056603773584906,
+            "num_samples": 57
+        },
+        "without_frequent_words": {
+            "precision": 0.7873303167420814,
+            "recall": 0.7016129032258065,
+            "f1": 0.7420042643923241,
+            "num_samples": 184
+        }
+    }
+}
