@@ -17,8 +17,8 @@ Tag high school math olympiad problems with 10 predefined topics:
 ## Virtual Environment
 ```console
 $ git clone https://github.com/dwiuzila/tagolym-ml.git
-$ git checkout code_migration
 $ cd tagolym-ml
+$ git checkout code_migration
 $ python3 -m venv venv
 $ source venv/bin/activate
 $ python3 -m pip install --upgrade pip
