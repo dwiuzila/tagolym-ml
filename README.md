@@ -68,7 +68,7 @@ setup.py                  - code packaging
 ```
 
 ## Workflow
-You wouldn't be able to execute the `# query data` part in the code snippet below due to data access restrictions. For that, you'd need my credential, which unfortunately is not to be shared. But worry not, I'll provide samples for you to work with. What you need to do is simply [download](https://cloud.datapane.com/reports/dkjYg97/data-samples-for-tagolym-project/) the samples `labeled_data.json` and save the file in a folder named `data` in the working directory.
+You wouldn't be able to execute the `# query data` part in the code snippet below due to data access restrictions. For that, you'd need my credential, which unfortunately is not to be shared. But worry not, I'll provide samples for you to work with. What you need to do is simply [download](https://gist.github.com/dwiuzila/74dc99fe6f6d3901dbd1695f77977865) the samples `labeled_data.json` and save the file in a folder named `data` in the working directory.
 
 ```python
 from pathlib import Path
