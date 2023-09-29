@@ -11,32 +11,32 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://dwiuzila.github.io/tagolym-ml/tagolym/data/</loc>
+         <loc>https://dwiuzila.github.io/tagolym-ml/reference/data/</loc>
          <lastmod>2023-09-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://dwiuzila.github.io/tagolym-ml/tagolym/evaluate/</loc>
+         <loc>https://dwiuzila.github.io/tagolym-ml/reference/evaluate/</loc>
          <lastmod>2023-09-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://dwiuzila.github.io/tagolym-ml/tagolym/main/</loc>
+         <loc>https://dwiuzila.github.io/tagolym-ml/reference/main/</loc>
          <lastmod>2023-09-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://dwiuzila.github.io/tagolym-ml/tagolym/predict/</loc>
+         <loc>https://dwiuzila.github.io/tagolym-ml/reference/predict/</loc>
          <lastmod>2023-09-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://dwiuzila.github.io/tagolym-ml/tagolym/train/</loc>
+         <loc>https://dwiuzila.github.io/tagolym-ml/reference/train/</loc>
          <lastmod>2023-09-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://dwiuzila.github.io/tagolym-ml/tagolym/utils/</loc>
+         <loc>https://dwiuzila.github.io/tagolym-ml/reference/utils/</loc>
          <lastmod>2023-09-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
