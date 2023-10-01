@@ -2,42 +2,42 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://dwiuzila.github.io/tagolym-ml/</loc>
-         <lastmod>2023-09-29</lastmod>
+         <lastmod>2023-10-01</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://dwiuzila.github.io/tagolym-ml/license/</loc>
-         <lastmod>2023-09-29</lastmod>
+         <lastmod>2023-10-01</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://dwiuzila.github.io/tagolym-ml/tagolym/data/</loc>
-         <lastmod>2023-09-29</lastmod>
+         <lastmod>2023-10-01</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://dwiuzila.github.io/tagolym-ml/tagolym/evaluate/</loc>
-         <lastmod>2023-09-29</lastmod>
+         <lastmod>2023-10-01</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://dwiuzila.github.io/tagolym-ml/tagolym/main/</loc>
-         <lastmod>2023-09-29</lastmod>
+         <lastmod>2023-10-01</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://dwiuzila.github.io/tagolym-ml/tagolym/predict/</loc>
-         <lastmod>2023-09-29</lastmod>
+         <lastmod>2023-10-01</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://dwiuzila.github.io/tagolym-ml/tagolym/train/</loc>
-         <lastmod>2023-09-29</lastmod>
+         <lastmod>2023-10-01</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://dwiuzila.github.io/tagolym-ml/tagolym/utils/</loc>
-         <lastmod>2023-09-29</lastmod>
+         <lastmod>2023-10-01</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>
