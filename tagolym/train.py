@@ -1,15 +1,36 @@
+"""Training and optimization module, called after extracting, loading, and 
+transforming raw data.
+"""
+
 import numpy as np
 from sklearn.metrics import f1_score
 from sklearn.pipeline import Pipeline
 from sklearn.linear_model import SGDClassifier
 from sklearn.multioutput import MultiOutputClassifier
 from sklearn.feature_extraction.text import TfidfVectorizer
+from tagolym._typing import ndarray, DataFrame, Any, Namespace, Trial
 
 from config import config
 from tagolym import data, evaluate, predict
 
 
-def train(args, df):
+def train(args: Namespace, df: DataFrame) -> dict[str, Any]:
+    """Preprocess the data, binarize the labels, and split the data using 
+    functions from [data][] module. Then, initialize a model, train it, 
+    predict the labels on all three splits using the trained model, and 
+    evaluate the predictions. This function accepts arguments, to which an 
+    additional argument `threshold` may be added before being returned. 
+    Basically, `threshold` is a list of the best threshold tuned for each 
+    class.
+
+    Args:
+        args (Namespace): Arguments containing booleans for preprocessing the 
+            posts and hyperparameters for the modeling pipeline.
+        df (DataFrame): Raw data containing posts and their corresponding tags.
+
+    Returns:
+        Artifacts containing arguments, label binarizer, and the trained model.
+    """
     # setup
     df = data.preprocess(df, args.nocommand, args.stem)
     tags, mlb = data.binarize(df["tags"])
@@ -60,7 +81,32 @@ def train(args, df):
     }
 
 
-def objective(args, df, trial, experiment=0):
+def objective(args: Namespace, df: DataFrame, trial: Trial, experiment: int = 0) -> float:
+    """F1 score is a metric chosen to be optimized in hyperparameter tuning. 
+    Using arguments chosen in an optuna trial, this function trains the model 
+    using [train][train.train] and returns the f1 score of the validation 
+    split. It also sets additional attributes to the trial, including 
+    precision, recall, and the f1 score on all three splits.
+
+    Args:
+        args (Namespace): Arguments containing booleans for preprocessing the 
+            posts and hyperparameters for the modeling pipeline.
+        df (DataFrame): Raw data containing posts and their corresponding tags.
+        trial (Trial): Process of evaluating an objective function. This 
+            object is passed to an objective function and provides interfaces 
+            to get parameter suggestion, manage the trial's state, and set/get 
+            user-defined attributes of the trial.
+        experiment (int, optional): Index for two-step optimization: 
+            optimizing hyperparameters in preprocessing, vectorization, and 
+            modeling; and hyperparameters in the learning algorithm. Defaults 
+            to 0.
+
+    Raises:
+        ValueError: Experiment index is neither 0 nor 1.
+
+    Returns:
+        F1 score of the validation split.
+    """
     # parameters to tune
     if experiment == 0:
         args.nocommand = trial.suggest_categorical("nocommand", [True, False])
@@ -92,7 +138,20 @@ def objective(args, df, trial, experiment=0):
     return artifacts["val_metrics"]["overall"]["f1"]
 
 
-def tune_threshold(y_true, y_score):
+def tune_threshold(y_true: ndarray, y_score: ndarray) -> list:
+    """The default decision boundary for a binary classification problem is 
+    0.5, which may not be optimal depending on the problem. So, besides tuning 
+    arguments, the threshold for each class is also tuned by optimizing the f1 
+    score. What it does is try all possible values of the threshold in a grid 
+    from 0 to 1 and pick the one that has the maximum f1 score.
+
+    Args:
+        y_true (ndarray): Ground truth (correct) target values.
+        y_score (ndarray): Prediction probability of the model.
+
+    Returns:
+        List of the best threshold for each class.
+    """
     # initialize threshold grid
     grid = np.linspace(0, 1, 101)
     threshold = []
@@ -103,7 +162,7 @@ def tune_threshold(y_true, y_score):
         for th in grid:
             yp = (ys > th).astype(int)
             f1[th] = f1_score(yt, yp)
-        best_th = max(f1, key=f1.get)
+        best_th = max(f1, key=f1.__getitem__)
         threshold.append(best_th)
     
     return threshold

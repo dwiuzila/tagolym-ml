@@ -1,0 +1,2 @@
+icon: material/table
+::: data

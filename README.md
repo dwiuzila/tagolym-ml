@@ -9,7 +9,10 @@ Tag high school math olympiad problems with 10 predefined topics:
 | combinatorics      |                    |                    |                         |
 
 **Input text:**
-> Find all functions $f:(0,\infty)\rightarrow (0,\infty)$ such that for any $x,y\in (0,\infty)$, $$xf(x^2)f(f(y)) + f(yf(x)) = f(xy) \left(f(f(x^2)) + f(f(y^2))\right).$$
+> Find all functions $f:(0,\infty)\rightarrow (0,\infty)$ such that for any $x,y\in (0,\infty)$, 
+> $$
+> xf(x^2)f(f(y)) + f(yf(x)) = f(xy) \left(f(f(x^2)) + f(f(y^2))\right).
+> $$
 
 **Predicted tags:**
 > ["algebra", "function"]
@@ -88,11 +91,11 @@ args_fp = Path(config.CONFIG_DIR, "args_opt.json")
 main.train_model(args_fp, experiment_name="baselines", run_name="sgd")
 
 # inference
-text = [
+texts = [
     "Let $c,d \geq 2$ be naturals. Let $\{a_n\}$ be the sequence satisfying $a_1 = c, a_{n+1} = a_n^d + c$ for $n = 1,2,\cdots$.Prove that for any $n \geq 2$, there exists a prime number $p$ such that $p|a_n$ and $p \not | a_i$ for $i = 1,2,\cdots n-1$.",
     "Let $ABC$ be a triangle with circumcircle $\Gamma$ and incenter $I$ and let $M$ be the midpoint of $\overline{BC}$. The points $D$, $E$, $F$ are selected on sides $\overline{BC}$, $\overline{CA}$, $\overline{AB}$ such that $\overline{ID} \perp \overline{BC}$, $\overline{IE}\perp \overline{AI}$, and $\overline{IF}\perp \overline{AI}$. Suppose that the circumcircle of $\triangle AEF$ intersects $\Gamma$ at a point $X$ other than $A$. Prove that lines $XD$ and $AM$ meet on $\Gamma$.",
     "Find all functions $f:(0,\infty)\rightarrow (0,\infty)$ such that for any $x,y\in (0,\infty)$, $$xf(x^2)f(f(y)) + f(yf(x)) = f(xy) \left(f(f(x^2)) + f(f(y^2))\right).$$",
     "Let $n$ be an even positive integer. We say that two different cells of a $n \times n$ board are [b]neighboring[/b] if they have a common side. Find the minimal number of cells on the $n \times n$ board that must be marked so that any cell (marked or not marked) has a marked neighboring cell."
 ]
-main.predict_tag(text=text)
+main.predict_tag(texts=texts)
 ```

@@ -1,0 +1,120 @@
+# general config
+site_name: Tagolym
+site_description: Classify math olympiad problems.
+site_url: https://dwiuzila.github.io/tagolym-ml/
+repo_url: https://github.com/dwiuzila/tagolym-ml/
+repo_name: dwiuzila/tagolym-ml
+edit_uri: edit/main/docs/
+site_dir: site
+site_author: Albers Uzila
+copyright: Copyright &copy; 2023 Albers Uzila
+watch: [mkdocs.yml, README.md, tagolym]
+validation:
+  omitted_files: warn
+  absolute_links: warn
+  unrecognized_links: warn
+
+# navigation
+nav:
+- Home:
+  - Overview: index.md
+  - License: license.md
+- API reference:
+  - Workflow:
+    - Main: tagolym/main.md
+    - Train: tagolym/train.md
+    - Evaluate: tagolym/evaluate.md
+    - Predict: tagolym/predict.md
+  - Supporting Functions:
+    - Data: tagolym/data.md
+    - Utils: tagolym/utils.md
+- About this project: https://dwiuzila.medium.com/list/0c6f23f2ddfa
+
+# theme
+theme:
+  name: material
+  logo: logo.png
+  features:
+  - announce.dismiss
+  - content.action.edit
+  - content.action.view
+  - content.code.annotate
+  - content.code.copy
+  - content.tooltips
+  - navigation.footer
+  - navigation.indexes
+  - navigation.sections
+  - navigation.tabs
+  - navigation.tabs.sticky
+  - navigation.top
+  - search.highlight
+  - search.suggest
+  - toc.follow
+  palette:
+  - media: "(prefers-color-scheme)"
+    toggle:
+      icon: material/brightness-auto
+      name: Switch to light mode
+  - media: "(prefers-color-scheme: light)"
+    scheme: default
+    primary: teal
+    accent: purple
+    toggle:
+      icon: material/weather-sunny
+      name: Switch to dark mode
+  - media: "(prefers-color-scheme: dark)"
+    scheme: slate
+    primary: black
+    accent: lime
+    toggle:
+      icon: material/weather-night
+      name: Switch to system preference
+
+# extensions
+markdown_extensions:
+- pymdownx.arithmatex:
+    generic: true
+- pymdownx.snippets:
+    check_paths: true
+- pymdownx.superfences
+- pymdownx.tasklist:
+    custom_checkbox: true
+- toc:
+    permalink: "¤"
+
+# plugins
+plugins:
+- search
+- mkdocstrings:
+    handlers:
+      python:
+        import:
+        - https://docs.python.org/3/objects.inv
+        paths: [tagolym]
+        options:
+          docstring_options:
+            ignore_init_summary: true
+          docstring_section_style: list
+          filters: ["!^_"]
+          heading_level: 1
+          members_order: source
+          inherited_members: true
+          merge_init_into_class: true
+          separate_signature: true
+          show_root_heading: true
+          show_root_full_path: false
+          show_signature_annotations: true
+
+# extras
+extra:
+  social:
+  - icon: fontawesome/brands/github
+    link: https://github.com/dwiuzila
+  - icon: fontawesome/brands/twitter
+    link: https://twitter.com/albersuzila
+  - icon: fontawesome/brands/linkedin
+    link: https://www.linkedin.com/in/albers-uzila/
+  - icon: fontawesome/brands/medium
+    link: https://dwiuzila.medium.com/
+extra_javascript:
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js

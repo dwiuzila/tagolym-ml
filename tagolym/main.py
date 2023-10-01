@@ -1,3 +1,11 @@
+"""The main module that runs everything end-to-end:
+
+1. Extract, load, and transform raw data
+2. Utilize preprocessed data to optimize the pipeline 
+3. Train a model with the best arguments
+4. Predict on new data using the trained model
+"""
+
 import json
 import joblib
 import mlflow
@@ -10,12 +18,21 @@ from google.cloud import bigquery
 from optuna.samplers import TPESampler
 from google.oauth2 import service_account
 from optuna.integration.mlflow import MLflowCallback
+from tagolym._typing import Any, Optional, FilePath
 
 from config import config
+from config.config import logger
 from tagolym import predict, train, utils
 
 
-def elt_data(key_path):
+def elt_data(key_path: FilePath) -> None:
+    """Query raw data from BigQuery and save it to `data` folder in JSON 
+    format.
+
+    Args:
+        key_path (FilePath): Path to the Google service account private key 
+            JSON file used for creating credentials.
+    """    
     # initialize bigquery client
     credentials = service_account.Credentials.from_service_account_file(
         key_path, scopes=["https://www.googleapis.com/auth/cloud-platform"],
@@ -45,10 +62,23 @@ def elt_data(key_path):
     with open(projects_fp, "w") as fp:
         json.dump(records, fp)
     
-    print("✅ Saved data!")
+    logger.info("✅ Saved data!")
     
 
-def train_model(args_fp, experiment_name, run_name):
+def train_model(args_fp: FilePath, experiment_name: str, run_name: str) -> None:
+    """Load raw data from `data` folder and pass it to [train.train][] to 
+    preprocess the data and train a model with it. Log the metrics, artifacts, 
+    and parameters using MLflow. Save also MLflow run ID and metrics to 
+    `config` folder.
+
+    Args:
+        args_fp (FilePath): Path to the arguments used. Arguments include 
+            booleans for preprocessing the posts (whether to exclude command 
+            words and to implement word stemming), hyperparameters for the 
+            modeling pipeline, and the best threshold for each class.
+        experiment_name (str): User input experiment name for MLflow.
+        run_name (str): User input run name for MLflow.
+    """
     # load labeled data
     projects_fp = Path(config.DATA_DIR, "labeled_data.json")
     df = pd.read_json(projects_fp)
@@ -59,7 +89,7 @@ def train_model(args_fp, experiment_name, run_name):
 
     with mlflow.start_run(run_name=run_name):
         run_id = mlflow.active_run().info.run_id
-        print(f"Run ID: {run_id}")
+        logger.info(f"Run ID: {run_id}")
 
         # fit, predict, and evaluate
         artifacts = train.train(args=args, df=df)
@@ -102,7 +132,24 @@ def train_model(args_fp, experiment_name, run_name):
     )
 
 
-def optimize(args_fp, study_name, num_trials):
+def optimize(args_fp: FilePath, study_name: str, num_trials: int) -> None:
+    """Load raw data from `data` folder and optimize given arguments by 
+    maximizing the f1 score in validation split. For search efficiency, the 
+    optimization is done in two steps:
+
+    1. for hyperparameters in preprocessing, vectorization, and modeling; and 
+    2. for hyperparameters in the learning algorithm.
+    
+    Save also the best arguments to `config` folder, name it as 
+    `args_opt.json`.
+
+    Args:
+        args_fp (FilePath): Path to the initial arguments for the entire 
+            process. Arguments include booleans for preprocessing the posts and 
+            hyperparameters for the modeling pipeline.
+        study_name (str): User input study name for MLflow.
+        num_trials (int): Number of trials for arguments tuning, at minimum 1.
+    """
     # load labeled data
     projects_fp = Path(config.DATA_DIR, "labeled_data.json")
     df = pd.read_json(projects_fp)
@@ -143,12 +190,21 @@ def optimize(args_fp, study_name, num_trials):
         args = args.__dict__
     
     # save to config
-    utils.save_dict(args, Path(config.CONFIG_DIR, "args_opt.json"), cls=utils.NumpyEncoder)
-    print(f"Best value (f1): {study.best_value}")
-    print(f"Best hyperparameters: {json.dumps(args, indent=2)}")
+    utils.save_dict(dict(args), Path(config.CONFIG_DIR, "args_opt.json"), cls=utils.NumpyEncoder)
+    logger.info(f"Best value (f1): {study.best_value}")
+    logger.info(f"Best hyperparameters: {json.dumps(args, indent=2)}")
 
 
-def load_artifacts(run_id=None):
+def load_artifacts(run_id: Optional[str] = None) -> dict[str, Any]:
+    """Load the artifacts of a specific MLflow run ID into memory, including 
+    arguments, metrics, model, and label binarizer.
+
+    Args:
+        run_id (Optional[str], optional): MLflow run ID. Defaults to None.
+
+    Returns:
+        Final artifacts used for inference.
+    """
     # get run id
     if not run_id:
         run_id = open(Path(config.CONFIG_DIR, "run_id.txt")).read()
@@ -175,13 +231,24 @@ def load_artifacts(run_id=None):
     }
 
 
-def predict_tag(text, run_id=None):
+def predict_tag(texts: list[str], run_id: Optional[str] = None) -> list[dict]:
+    """Given a specific MLflow run ID and some posts, predict their labels 
+    using preloaded artifacts by calling [predict.predict][].
+
+    Args:
+        texts (list[str]): List of posts.
+        run_id (Optional[str], optional): MLflow run ID. If None, run ID will 
+            be set from `run_id.txt` inside `config` folder. Defaults to None.
+
+    Returns:
+        List of key-value pairs of post and its label prediction.
+    """
     # get run id
     if not run_id:
         run_id = open(Path(config.CONFIG_DIR, "run_id.txt")).read()
     
     # load artifacts and predict
     artifacts = load_artifacts(run_id=run_id)
-    prediction = predict.predict(texts=text, artifacts=artifacts)
-    print(json.dumps(prediction, indent=2))
+    prediction = predict.predict(texts=texts, artifacts=artifacts)
+    logger.info(json.dumps(prediction, indent=2))
     return prediction
