@@ -39,15 +39,20 @@ config/
 ├── train_metrics.json    - model performance on train split
 └── val_metrics.json      - model performance on validation split
 
-credentials/
-└── bigquery-key.json     - keys and passwords
-
-data/
-└── labeled_data.json     - data used in the project
-
-stores/model/             - MLflow experiments
+docs/
+├── tagolym/
+│   ├── data.md           - documentation for data.py
+│   ├── evaluate.md       - documentation for evaluate.py
+│   ├── main.md           - documentation for main.py
+│   ├── predict.md        - documentation for predict.py
+│   ├── train.md          - documentation for train.py
+│   └── utils.md          - documentation for utils.py
+├── index.md              - homepage
+├── license.md            - project license
+└── logo.png              - project logo
 
 tagolym/
+├── _typing.py            - type hints
 ├── data.py               - data processing components
 ├── evaluate.py           - evaluation components
 ├── main.py               - training/optimization pipelines
@@ -55,15 +60,15 @@ tagolym/
 ├── train.py              - training components
 └── utils.py              - supplementary utilities
 
-tagolym.egg-info/         - project metadata
-
-venv/                     - virtual environment
-
 .gitignore                - files/folders that git will ignore
 
 LICENSE                   - project license
 
 README.md                 - longform description of the project
+
+mkdocs.yml                - configuration file for docs
+
+pyproject.toml            - build system dependencies
 
 requirements.txt          - package dependencies
 
@@ -98,4 +103,11 @@ texts = [
     "Let $n$ be an even positive integer. We say that two different cells of a $n \times n$ board are [b]neighboring[/b] if they have a common side. Find the minimal number of cells on the $n \times n$ board that must be marked so that any cell (marked or not marked) has a marked neighboring cell."
 ]
 main.predict_tag(texts=texts)
+```
+
+## Documentation
+```console
+$ git checkout documentation
+$ pip install -e ".[docs]"
+$ mkdocs gh-deploy --force
 ```
