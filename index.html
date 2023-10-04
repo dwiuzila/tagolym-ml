@@ -791,6 +791,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#documentation" class="md-nav__link">
+    Documentation
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -862,10 +869,8 @@
 </table>
 <p><strong>Input text:</strong></p>
 <blockquote>
-<p>Find all functions <span class="arithmatex">\(f:(0,\infty)\rightarrow (0,\infty)\)</span> such that for any <span class="arithmatex">\(x,y\in (0,\infty)\)</span>, 
-$$
-xf(x^2)f(f(y)) + f(yf(x)) = f(xy) \left(f(f(x^2)) + f(f(y^2))\right).
-$$</p>
+<p>Find all functions <span class="arithmatex">\(f:(0,\infty)\rightarrow (0,\infty)\)</span> such that for any <span class="arithmatex">\(x,y\in (0,\infty)\)</span>, </p>
+<div class="arithmatex">\[xf(x^2)f(f(y)) + f(yf(x)) = f(xy) \left(f(f(x^2)) + f(f(y^2))\right).\]</div>
 </blockquote>
 <p><strong>Predicted tags:</strong></p>
 <blockquote>
@@ -890,15 +895,20 @@ $$</p>
 ├── train_metrics.json    - model performance on train split
 └── val_metrics.json      - model performance on validation split
 
-credentials/
-└── bigquery-key.json     - keys and passwords
-
-data/
-└── labeled_data.json     - data used in the project
-
-stores/model/             - MLflow experiments
+docs/
+├── tagolym/
+│   ├── data.md           - documentation for data.py
+│   ├── evaluate.md       - documentation for evaluate.py
+│   ├── main.md           - documentation for main.py
+│   ├── predict.md        - documentation for predict.py
+│   ├── train.md          - documentation for train.py
+│   └── utils.md          - documentation for utils.py
+├── index.md              - homepage
+├── license.md            - project license
+└── logo.png              - project logo
 
 tagolym/
+├── _typing.py            - type hints
 ├── data.py               - data processing components
 ├── evaluate.py           - evaluation components
 ├── main.py               - training/optimization pipelines
@@ -906,15 +916,15 @@ tagolym/
 ├── train.py              - training components
 └── utils.py              - supplementary utilities
 
-tagolym.egg-info/         - project metadata
-
-venv/                     - virtual environment
-
 .gitignore                - files/folders that git will ignore
 
 LICENSE                   - project license
 
 README.md                 - longform description of the project
+
+mkdocs.yml                - configuration file for docs
+
+pyproject.toml            - build system dependencies
 
 requirements.txt          - package dependencies
 
@@ -946,6 +956,12 @@ setup.py                  - code packaging
     <span class="s2">&quot;Let $n$ be an even positive integer. We say that two different cells of a $n </span><span class="se">\t</span><span class="s2">imes n$ board are [b]neighboring[/b] if they have a common side. Find the minimal number of cells on the $n </span><span class="se">\t</span><span class="s2">imes n$ board that must be marked so that any cell (marked or not marked) has a marked neighboring cell.&quot;</span>
 <span class="p">]</span>
 <span class="n">main</span><span class="o">.</span><span class="n">predict_tag</span><span class="p">(</span><span class="n">texts</span><span class="o">=</span><span class="n">texts</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Permanent link">¤</a></h2>
+<p>See full documentation <a href="https://dwiuzila.github.io/tagolym-ml/">here</a>.</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>git<span class="w"> </span>checkout<span class="w"> </span>documentation
+<span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[docs]&quot;</span>
+<span class="gp">$ </span>mkdocs<span class="w"> </span>gh-deploy<span class="w"> </span>--force
 </code></pre></div>
 
 
