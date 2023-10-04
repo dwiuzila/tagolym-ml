@@ -10,9 +10,8 @@ Tag high school math olympiad problems with 10 predefined topics:
 
 **Input text:**
 > Find all functions $f:(0,\infty)\rightarrow (0,\infty)$ such that for any $x,y\in (0,\infty)$, 
-> $$
-> xf(x^2)f(f(y)) + f(yf(x)) = f(xy) \left(f(f(x^2)) + f(f(y^2))\right).
-> $$
+> 
+> $$xf(x^2)f(f(y)) + f(yf(x)) = f(xy) \left(f(f(x^2)) + f(f(y^2))\right).$$
 
 **Predicted tags:**
 > ["algebra", "function"]
@@ -106,6 +105,8 @@ main.predict_tag(texts=texts)
 ```
 
 ## Documentation
+See full documentation [here](https://dwiuzila.github.io/tagolym-ml/).
+
 ```console
 $ git checkout documentation
 $ pip install -e ".[docs]"
