@@ -70,7 +70,7 @@ Makefile                  - task automation
 
 mkdocs.yml                - configuration file for docs
 
-pyproject.toml            - configuration file for packaging tools
+pyproject.toml            - build system dependencies
 
 README.md                 - longform description of the project
 
