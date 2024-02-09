@@ -1,0 +1,10 @@
+[flake8]
+exclude = venv
+per-file-ignores = tagolym/_typing.py:F401
+max-line-length = 88
+extend-ignore = E203, E501, E704
+
+# E203: Whitespace before ':'
+# F401: Module imported but unused
+# E501: Line too long
+# E704: Multiple statements on one line

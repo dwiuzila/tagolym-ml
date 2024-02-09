@@ -1,2 +1,28 @@
 [tool.mypy]
 disable_error_code = ["import", "var-annotated", "assignment"]
+
+[tool.black]
+line-length = 88
+include = '\.pyi?$'
+# excludes files or directories in addition to the defaults
+extend-exclude = '''
+(
+      .eggs
+    | .git
+    | .hg
+    | .mypy_cache
+    | .tox
+    | venv
+    | _build
+    | buck-out
+    | build
+    | dist
+)
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 79
+multi_line_output = 3
+include_trailing_comma = true
+virtual_env = "venv"

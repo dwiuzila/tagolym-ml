@@ -1,30 +1,30 @@
-"""Training and optimization module, called after extracting, loading, and 
+"""Training and optimization module, called after extracting, loading, and
 transforming raw data.
 """
 
 import numpy as np
-from sklearn.metrics import f1_score
-from sklearn.pipeline import Pipeline
-from sklearn.linear_model import SGDClassifier
-from sklearn.multioutput import MultiOutputClassifier
 from sklearn.feature_extraction.text import TfidfVectorizer
-from tagolym._typing import ndarray, DataFrame, Any, Namespace, Trial
+from sklearn.linear_model import SGDClassifier
+from sklearn.metrics import f1_score
+from sklearn.multioutput import MultiOutputClassifier
+from sklearn.pipeline import Pipeline
 
 from config import config
 from tagolym import data, evaluate, predict
+from tagolym._typing import Any, DataFrame, Namespace, Trial, ndarray
 
 
 def train(args: Namespace, df: DataFrame) -> dict[str, Any]:
-    """Preprocess the data, binarize the labels, and split the data using 
-    functions from [data][] module. Then, initialize a model, train it, 
-    predict the labels on all three splits using the trained model, and 
-    evaluate the predictions. This function accepts arguments, to which an 
-    additional argument `threshold` may be added before being returned. 
-    Basically, `threshold` is a list of the best threshold tuned for each 
+    """Preprocess the data, binarize the labels, and split the data using
+    functions from [data][] module. Then, initialize a model, train it,
+    predict the labels on all three splits using the trained model, and
+    evaluate the predictions. This function accepts arguments, to which an
+    additional argument `threshold` may be added before being returned.
+    Basically, `threshold` is a list of the best threshold tuned for each
     class.
 
     Args:
-        args (Namespace): Arguments containing booleans for preprocessing the 
+        args (Namespace): Arguments containing booleans for preprocessing the
             posts and hyperparameters for the modeling pipeline.
         df (DataFrame): Raw data containing posts and their corresponding tags.
 
@@ -40,31 +40,36 @@ def train(args: Namespace, df: DataFrame) -> dict[str, Any]:
     )
 
     # model
-    model = Pipeline([
-        ("tfidf", TfidfVectorizer(ngram_range=(1, args.ngram_max))),
-        ("multilabel", MultiOutputClassifier(
-            SGDClassifier(
-                penalty="elasticnet",
-                random_state=config.SEED,
-                early_stopping=True,
-                class_weight="balanced",
-                loss=args.loss,
-                alpha=args.alpha,
-                l1_ratio=args.l1_ratio,
-                learning_rate=args.learning_rate,
-                eta0=args.eta0,
-                power_t=args.power_t,
+    model = Pipeline(
+        [
+            ("tfidf", TfidfVectorizer(ngram_range=(1, args.ngram_max))),
+            (
+                "multilabel",
+                MultiOutputClassifier(
+                    SGDClassifier(
+                        penalty="elasticnet",
+                        random_state=config.SEED,
+                        early_stopping=True,
+                        class_weight="balanced",
+                        loss=args.loss,
+                        alpha=args.alpha,
+                        l1_ratio=args.l1_ratio,
+                        learning_rate=args.learning_rate,
+                        eta0=args.eta0,
+                        power_t=args.power_t,
+                    ),
+                    n_jobs=-1,
+                ),
             ),
-            n_jobs=-1,
-        )),
-    ])
-    
+        ]
+    )
+
     # fit, predict, and evaluate
     model.fit(X_train["token"], y_train)
-    
+
     y_pred, args = predict.custom_predict(X_val["token"], model, args, y_true=y_val)
     val_metrics = evaluate.get_metrics(y_val, y_pred, classes, df=X_val)
-    
+
     y_pred, args = predict.custom_predict(X_train["token"], model, args)
     train_metrics = evaluate.get_metrics(y_train, y_pred, classes, df=X_train)
 
@@ -81,24 +86,26 @@ def train(args: Namespace, df: DataFrame) -> dict[str, Any]:
     }
 
 
-def objective(args: Namespace, df: DataFrame, trial: Trial, experiment: int = 0) -> float:
-    """F1 score is a metric chosen to be optimized in hyperparameter tuning. 
-    Using arguments chosen in an optuna trial, this function trains the model 
-    using [train][train.train] and returns the f1 score of the validation 
-    split. It also sets additional attributes to the trial, including 
+def objective(
+    args: Namespace, df: DataFrame, trial: Trial, experiment: int = 0
+) -> float:
+    """F1 score is a metric chosen to be optimized in hyperparameter tuning.
+    Using arguments chosen in an optuna trial, this function trains the model
+    using [train][train.train] and returns the f1 score of the validation
+    split. It also sets additional attributes to the trial, including
     precision, recall, and the f1 score on all three splits.
 
     Args:
-        args (Namespace): Arguments containing booleans for preprocessing the 
+        args (Namespace): Arguments containing booleans for preprocessing the
             posts and hyperparameters for the modeling pipeline.
         df (DataFrame): Raw data containing posts and their corresponding tags.
-        trial (Trial): Process of evaluating an objective function. This 
-            object is passed to an objective function and provides interfaces 
-            to get parameter suggestion, manage the trial's state, and set/get 
+        trial (Trial): Process of evaluating an objective function. This
+            object is passed to an objective function and provides interfaces
+            to get parameter suggestion, manage the trial's state, and set/get
             user-defined attributes of the trial.
-        experiment (int, optional): Index for two-step optimization: 
-            optimizing hyperparameters in preprocessing, vectorization, and 
-            modeling; and hyperparameters in the learning algorithm. Defaults 
+        experiment (int, optional): Index for two-step optimization:
+            optimizing hyperparameters in preprocessing, vectorization, and
+            modeling; and hyperparameters in the learning algorithm. Defaults
             to 0.
 
     Raises:
@@ -112,7 +119,9 @@ def objective(args: Namespace, df: DataFrame, trial: Trial, experiment: int = 0)
         args.nocommand = trial.suggest_categorical("nocommand", [True, False])
         args.stem = trial.suggest_categorical("stem", [True, False])
         args.ngram_max = trial.suggest_int("ngram_max", 2, 4)
-        args.loss = trial.suggest_categorical("loss", ["hinge", "log_loss", "modified_huber"])
+        args.loss = trial.suggest_categorical(
+            "loss", ["hinge", "log_loss", "modified_huber"]
+        )
         args.l1_ratio = trial.suggest_float("l1_ratio", 0.0, 1.0)
         args.alpha = trial.suggest_float("alpha", 1e-5, 1e-2, log=True)
     elif experiment == 1:
@@ -139,10 +148,10 @@ def objective(args: Namespace, df: DataFrame, trial: Trial, experiment: int = 0)
 
 
 def tune_threshold(y_true: ndarray, y_score: ndarray) -> list:
-    """The default decision boundary for a binary classification problem is 
-    0.5, which may not be optimal depending on the problem. So, besides tuning 
-    arguments, the threshold for each class is also tuned by optimizing the f1 
-    score. What it does is try all possible values of the threshold in a grid 
+    """The default decision boundary for a binary classification problem is
+    0.5, which may not be optimal depending on the problem. So, besides tuning
+    arguments, the threshold for each class is also tuned by optimizing the f1
+    score. What it does is try all possible values of the threshold in a grid
     from 0 to 1 and pick the one that has the maximum f1 score.
 
     Args:
@@ -155,7 +164,7 @@ def tune_threshold(y_true: ndarray, y_score: ndarray) -> list:
     # initialize threshold grid
     grid = np.linspace(0, 1, 101)
     threshold = []
-    
+
     # find best threshold for each class
     for yt, ys in zip(y_true.T, y_score.T):
         f1 = {}
@@ -164,5 +173,5 @@ def tune_threshold(y_true: ndarray, y_score: ndarray) -> list:
             f1[th] = f1_score(yt, yp)
         best_th = max(f1, key=f1.__getitem__)
         threshold.append(best_th)
-    
+
     return threshold

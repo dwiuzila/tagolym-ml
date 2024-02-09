@@ -1,4 +1,8 @@
 # tagolym-ml
+
+[![Built with Material for MkDocs](https://img.shields.io/badge/Material_for_MkDocs-526CFE?style=for-the-badge&logo=MaterialForMkDocs&logoColor=white)](https://squidfunk.github.io/mkdocs-material/)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 Tag high school math olympiad problems with 10 predefined topics:
 
 | Big Topics         | Algebra Subtopics  | Geometry Subtopics | Number Theory Subtopics |
@@ -20,11 +24,8 @@ Tag high school math olympiad problems with 10 predefined topics:
 ```console
 $ git clone https://github.com/dwiuzila/tagolym-ml.git
 $ cd tagolym-ml
-$ git checkout code_migration
-$ python3 -m venv venv
-$ source venv/bin/activate
-$ python3 -m pip install --upgrade pip
-$ python3 -m pip install -e .
+$ git checkout style
+$ make venv
 ```
 
 ## Directory
@@ -59,15 +60,19 @@ tagolym/
 ├── train.py              - training components
 └── utils.py              - supplementary utilities
 
+.flake8                   - code quality assurance
+
 .gitignore                - files/folders that git will ignore
 
 LICENSE                   - project license
 
-README.md                 - longform description of the project
+Makefile                  - task automation
 
 mkdocs.yml                - configuration file for docs
 
-pyproject.toml            - build system dependencies
+pyproject.toml            - configuration file for packaging tools
+
+README.md                 - longform description of the project
 
 requirements.txt          - package dependencies
 
@@ -105,10 +110,20 @@ main.predict_tag(texts=texts)
 ```
 
 ## Documentation
-See full documentation [here](https://dwiuzila.github.io/tagolym-ml/).
+Open full documentation: https://dwiuzila.github.io/tagolym-ml/.
 
 ```console
 $ git checkout documentation
 $ pip install -e ".[docs]"
 $ mkdocs gh-deploy --force
+```
+
+## Makefile
+
+```console
+$ make help
+Commands:
+venv    : creates a virtual environment.
+style   : executes style formatting.
+clean   : cleans all unnecessary files.
 ```
